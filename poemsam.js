@@ -8,7 +8,7 @@ var stanza = {
 		5: "Where late the sweet birds sang"
 	};
 
-function createInput ( field ) {
+function createInput ( field ) { // my great change
 	var input = document.createElement("input");
 	
 	input.type = "text";
