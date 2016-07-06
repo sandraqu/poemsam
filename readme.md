@@ -1,1 +1,1 @@
-Hello Heath!
+Not your typical hangman
