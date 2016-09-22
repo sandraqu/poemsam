@@ -41,4 +41,3 @@
 	buildPoem = makePoemEntity(wordsAndBrNbspEntities);
 	$print.append(buildPoem);
 }());
-

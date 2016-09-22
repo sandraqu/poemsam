@@ -1,1 +1,1 @@
-Hello Unicorn!
+Not your typical hangman
