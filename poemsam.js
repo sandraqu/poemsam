@@ -1,49 +1,41 @@
-'use strict';
 
-var stanza = {
-		1: "That time of year",
-		2: "Thou mayst in me behold",
-		3: "When yellow leaves or none or few do hang",
-		4: "From broken bows that shake against the cold",
-		5: "Where late the sweet birds sang"
-	};
+(function() {
+	var	$el = $("#newPoem"),
+		$print = $('#poemsam'),
+		str;
+			
+	var title = $el.find('.poem-title').html();
+	var verses = $el.find('.poem-body').html();
 
-function createInput ( field ) {
-	var input = document.createElement("input");
-	
-	input.type = "text";
-	input.className = "button";
-	input.value = field;
-	return input;
-}
-
-function printButtons( buttons ) {
-	var div = document.getElementById("poemsam"),
-	buttonsLen = buttons.length;
-	
-	for ( var i = 0; i < buttonsLen; i++ ) {
-		div.appendChild(buttons[i]);
+	function replaceLinesAndSpaces(wordsAndSpaces) {
+		wordsAndSpaces.forEach( function(val,idx) {
+			replaceLineReturns = val[idx].replace(/\r\n/g,'<br/>').replace(/[\r\n]/g,'<br/>');
+			replaceSpaces = replaceLineReturns.replace(/\s/g,'&nbsp;');
+		});
+		return wordsAndSpaces;
 	}
-}
 
-function getInput( verse ) {
-	var line = verse.split(" "),
-	lineLen = line.length,
-	htm = [];
+	function makePoemEntity(wordsAndSpaceEntities) {
+		var poemEntity = "";
 
-	for ( var i = 0; i < lineLen; i++ ) {
-		htm.push( createInput( line[i] ) );
+		wordsAndSpaceEntities.forEach( function(val) {
+			makeLineReturnEntities = val.replace(/\r\n/g,'<br/>').replace(/[\r\n]/g,'<br/>');
+			makeSpaceEntities = makeLineReturnEntities.replace(/\s/g,'&nbsp;');
+			poemEntity += makeSpaceEntities;
+		});
+		return poemEntity;
 	}
-	// add a line break to every verse
-	htm.push( document.createElement("br") );
-	htm.push( document.createElement("br") );
-	printButtons(htm);
-}
 
-function getEachLine(stanza) {
-	for ( var verse in stanza ) {
-		getInput( stanza[verse] );
-	}
-}
+	wordsAndSpaces = verses.split(/([^\s]+)/);
+	debugger;
+	wordIndexes = wordsAndSpaces.map(function(el,idx){
+		return /\s+/.test(el) ? undefined : idx;
+	})
+	.filter(function(el){
+		return el !== undefined;
+	});
 
-getEachLine(stanza);
+	poemEntity = makePoemEntity(wordsAndSpaces);
+	$print.append(poemEntity);
+}());
+
