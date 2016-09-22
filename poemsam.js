@@ -7,14 +7,6 @@
 	var title = $el.find('.poem-title').html();
 	var verses = $el.find('.poem-body').html();
 
-	function replaceLinesAndSpaces(wordsAndSpaces) {
-		wordsAndSpaces.forEach( function(val,idx) {
-			replaceLineReturns = val[idx].replace(/\r\n/g,'<br/>').replace(/[\r\n]/g,'<br/>');
-			replaceSpaces = replaceLineReturns.replace(/\s/g,'&nbsp;');
-		});
-		return wordsAndSpaces;
-	}
-
 	function makePoemEntity(wordsAndSpaceEntities) {
 		var poemEntity = "";
 
