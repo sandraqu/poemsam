@@ -43,12 +43,12 @@
 		return wordsAndBrNbspEntities;
 	}
 
-	function makePoemEntity(wordsAndBrNbspEntities) {
-		var poemEntity = "";
+	function makeDomEntity(wordsAndBrNbspEntities) {
+		var domEntity = "";
 		wordsAndBrNbspEntities.forEach( function(val) {
-			poemEntity += val;
+			domEntity += val;
 		});
-		return poemEntity;
+		return domEntity;
 	}
 
 	/**
@@ -94,7 +94,7 @@
 	buttonDomElements = makeWordButtons(suffledIndexesForHiding,wordsAndBrNbspEntities);
 	wordsAndHiddenEntities = hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities);
 
-	buildPoem = makePoemEntity(wordsAndHiddenEntities);
+	buildPoem = makeDomEntity(wordsAndHiddenEntities);
 	$print.append(buildPoem);
 }());
 
