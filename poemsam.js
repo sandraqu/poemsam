@@ -1,6 +1,7 @@
 (function() {
 	var	$el = $("#newPoem"),
 			$print = $('#poemsam'),
+			$buttons = $('#poemButtons'),
 			str;
 			
 	var title = $el.find('.poem-title').html();
@@ -25,30 +26,52 @@
 			finalIndexes=[],
 			rand;
 
-		for(i=0; i<wordIndexes.length-1; i++) {
-			subsetOfIndexes.push(wordIndexes[i]);
-			if( i%interval === 0) {
+		wordIndexes.forEach( function(val,idx) {
+			subsetOfIndexes.push(wordIndexes[idx]);
+			if( idx%interval === 0) {
 				rand = subsetOfIndexes[Math.floor(Math.random() * subsetOfIndexes.length)];
 				finalIndexes.push(rand);
 				subsetOfIndexes = [];
 			}
-		}
+		});
 		return finalIndexes; // for hiding
 	}
 
 	function hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities) {
-		selectedIndexesForHiding.forEach( function(val) {
-			wordsAndBrNbspEntities[val] = 	'<span id="guess-' + val + '" class="mdl-chip" style="width:30px;"><span class="mdl-chip__text"></span></span>'
+		selectedIndexesForHiding.forEach( function(val,idx) {
+			wordsAndBrNbspEntities[val] = '<span id="holder-'+ idx +'" data-match="'+ val +'" class="mdl-chip" style="width:30px;"><span class="mdl-chip__text"></span></span>'
 		});
 		return wordsAndBrNbspEntities;
 	}
 
-	function makePoemEntity(wordsAndBrNbspEntities) {
-		var poemEntity = "";
+	function makeDomEntity(wordsAndBrNbspEntities) {
+		var domEntity = "";
 		wordsAndBrNbspEntities.forEach( function(val) {
-			poemEntity += val;
+			domEntity += val;
 		});
-		return poemEntity;
+		return domEntity;
+	}
+
+	/**
+	 * Randomize array element order in-place.
+	 * Using Durstenfeld shuffle algorithm.
+	 */
+	function shuffleArray(arr) {
+		arr.forEach( function(val,i) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    });
+    return arr;
+	}
+
+	function makeWordButtons(suffledIndexesForHiding,wordsAndBrNbspEntities) {
+		var buttonEntities = [];
+		suffledIndexesForHiding.forEach( function(val,idx) {
+			buttonEntities.push('<span id="guess-'+ idx +'" data-match="'+ val +'" class="mdl-chip"><span class="mdl-chip__text">'+wordsAndBrNbspEntities[val]+'</span></span>');
+		});
+		return buttonEntities;
 	}
 
 	wordsAndSpaces = verses.split(/([^\s]+)/);
@@ -62,8 +85,18 @@
 	wordsAndBrEntities = makeBrElements(wordsAndSpaces);
 	wordsAndBrNbspEntities = makeNbspElements(wordsAndBrEntities);
 	selectedIndexesForHiding = selectOneInX(5,wordIndexes);
+	suffledIndexesForHiding = shuffleArray(selectedIndexesForHiding);
+	//// encrypt match number
+	// create buttons
+	// on button click, find active holder and enter
+	//// decrypt match number
+	
+	// does guess match index
+	buttonDomElements = makeWordButtons(suffledIndexesForHiding,wordsAndBrNbspEntities);
 	wordsAndHiddenEntities = hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities);
 
-	buildPoem = makePoemEntity(wordsAndHiddenEntities);
+	buildButtons = makeDomEntity(buttonDomElements);
+	buildPoem = makeDomEntity(wordsAndHiddenEntities);
+	$buttons.append(buildButtons);
 	$print.append(buildPoem);
 }());
