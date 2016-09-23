@@ -20,6 +20,29 @@
 		return wordsAndBrEntities;
 	}
 
+	function selectOneInX(interval,wordIndexes) {
+		var subsetOfIndexes=[],
+			finalIndexes=[],
+			rand;
+
+		for(i=0; i<wordIndexes.length-1; i++) {
+			subsetOfIndexes.push(wordIndexes[i]);
+			if( i%interval === 0) {
+				rand = subsetOfIndexes[Math.floor(Math.random() * subsetOfIndexes.length)];
+				finalIndexes.push(rand);
+				subsetOfIndexes = [];
+			}
+		}
+		return finalIndexes; // for hiding
+	}
+
+	function hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities) {
+		selectedIndexesForHiding.forEach( function(val) {
+			wordsAndBrNbspEntities[val] = 	'<span id="guess-' + val + '" class="mdl-chip" style="width:30px;"><span class="mdl-chip__text"></span></span>'
+		});
+		return wordsAndBrNbspEntities;
+	}
+
 	function makePoemEntity(wordsAndBrNbspEntities) {
 		var poemEntity = "";
 		wordsAndBrNbspEntities.forEach( function(val) {
@@ -29,15 +52,18 @@
 	}
 
 	wordsAndSpaces = verses.split(/([^\s]+)/);
-	wordIndexes = wordsAndSpaces.map(function(el,idx){
+	wordIndexes = wordsAndSpaces.map(function(el,idx) {
 		return /\s+/.test(el) ? undefined : idx;
 	})
-	.filter(function(el){
+	.filter(function(el) {
 		return el !== undefined;
 	});
 
 	wordsAndBrEntities = makeBrElements(wordsAndSpaces);
 	wordsAndBrNbspEntities = makeNbspElements(wordsAndBrEntities);
-	buildPoem = makePoemEntity(wordsAndBrNbspEntities);
+	selectedIndexesForHiding = selectOneInX(5,wordIndexes);
+	wordsAndHiddenEntities = hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities);
+
+	buildPoem = makePoemEntity(wordsAndHiddenEntities);
 	$print.append(buildPoem);
 }());
