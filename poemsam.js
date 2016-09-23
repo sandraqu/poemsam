@@ -51,6 +51,28 @@
 		return poemEntity;
 	}
 
+	/**
+	 * Randomize array element order in-place.
+	 * Using Durstenfeld shuffle algorithm.
+	 */
+	function shuffleArray(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    };
+    return arr;
+	}
+
+	function makeWordButtons(suffledIndexesForHiding,wordsAndBrNbspEntities) {
+		var buttonEntities = [];
+		suffledIndexesForHiding.forEach( function(val,idx) {
+			buttonEntities.push('<span id="guess-'+ idx +'" data-match="'+ val +'" class="mdl-chip" style="width:30px;"><span class="mdl-chip__text">'+wordsAndBrNbspEntities[val]+'</span></span>');
+		});
+		return buttonEntities;
+	}
+
 	wordsAndSpaces = verses.split(/([^\s]+)/);
 	wordIndexes = wordsAndSpaces.map(function(el,idx) {
 		return /\s+/.test(el) ? undefined : idx;
@@ -62,9 +84,14 @@
 	wordsAndBrEntities = makeBrElements(wordsAndSpaces);
 	wordsAndBrNbspEntities = makeNbspElements(wordsAndBrEntities);
 	selectedIndexesForHiding = selectOneInX(5,wordIndexes);
+	suffledIndexesForHiding = shuffleArray(selectedIndexesForHiding);
+	//// encrypt match number
 	// create buttons
 	// on button click, find active holder and enter
+	//// decrypt match number
+	
 	// does guess match index
+	buttonDomElements = makeWordButtons(suffledIndexesForHiding,wordsAndBrNbspEntities);
 	wordsAndHiddenEntities = hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities);
 
 	buildPoem = makePoemEntity(wordsAndHiddenEntities);
