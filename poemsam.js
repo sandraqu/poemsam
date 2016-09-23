@@ -1,6 +1,7 @@
 (function() {
 	var	$el = $("#newPoem"),
 			$print = $('#poemsam'),
+			$buttons = $('#poemButtons'),
 			str;
 			
 	var title = $el.find('.poem-title').html();
@@ -68,7 +69,7 @@
 	function makeWordButtons(suffledIndexesForHiding,wordsAndBrNbspEntities) {
 		var buttonEntities = [];
 		suffledIndexesForHiding.forEach( function(val,idx) {
-			buttonEntities.push('<span id="guess-'+ idx +'" data-match="'+ val +'" class="mdl-chip" style="width:30px;"><span class="mdl-chip__text">'+wordsAndBrNbspEntities[val]+'</span></span>');
+			buttonEntities.push('<span id="guess-'+ idx +'" data-match="'+ val +'" class="mdl-chip"><span class="mdl-chip__text">'+wordsAndBrNbspEntities[val]+'</span></span>');
 		});
 		return buttonEntities;
 	}
@@ -94,7 +95,9 @@
 	buttonDomElements = makeWordButtons(suffledIndexesForHiding,wordsAndBrNbspEntities);
 	wordsAndHiddenEntities = hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities);
 
+	buildButtons = makeDomEntity(buttonDomElements);
 	buildPoem = makeDomEntity(wordsAndHiddenEntities);
+	$buttons.append(buildButtons);
 	$print.append(buildPoem);
 }());
 
