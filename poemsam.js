@@ -37,8 +37,8 @@
 	}
 
 	function hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities) {
-		selectedIndexesForHiding.forEach( function(val) {
-			wordsAndBrNbspEntities[val] = 	'<span id="guess-' + val + '" class="mdl-chip" style="width:30px;"><span class="mdl-chip__text"></span></span>'
+		selectedIndexesForHiding.forEach( function(val,idx) {
+			wordsAndBrNbspEntities[val] = '<span id="holder-'+ idx +'" data-match="'+ val +'" class="mdl-chip" style="width:30px;"><span class="mdl-chip__text"></span></span>'
 		});
 		return wordsAndBrNbspEntities;
 	}
@@ -62,6 +62,9 @@
 	wordsAndBrEntities = makeBrElements(wordsAndSpaces);
 	wordsAndBrNbspEntities = makeNbspElements(wordsAndBrEntities);
 	selectedIndexesForHiding = selectOneInX(5,wordIndexes);
+	// create buttons
+	// on button click, find active holder and enter
+	// does guess match index
 	wordsAndHiddenEntities = hideTheseWords(selectedIndexesForHiding,wordsAndBrNbspEntities);
 
 	buildPoem = makePoemEntity(wordsAndHiddenEntities);
