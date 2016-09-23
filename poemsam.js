@@ -25,14 +25,14 @@
 			finalIndexes=[],
 			rand;
 
-		for(i=0; i<wordIndexes.length-1; i++) {
-			subsetOfIndexes.push(wordIndexes[i]);
-			if( i%interval === 0) {
+		wordIndexes.forEach( function(val,idx) {
+			subsetOfIndexes.push(wordIndexes[idx]);
+			if( idx%interval === 0) {
 				rand = subsetOfIndexes[Math.floor(Math.random() * subsetOfIndexes.length)];
 				finalIndexes.push(rand);
 				subsetOfIndexes = [];
 			}
-		}
+		});
 		return finalIndexes; // for hiding
 	}
 
