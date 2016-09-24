@@ -10,6 +10,7 @@
 	var poemHidden = '.poem-hidden';
 	var poemWord = '.poem-word';
 
+	/*
 	function makeBrElements(wordsAndSpaces) {
 		wordsAndSpaces.forEach( function(val,idx,arr) {
 			arr[idx] = val.replace(/\r\n/g,'<br/>').replace(/[\r\n]/g,'<br/>');
@@ -23,6 +24,7 @@
 		});
 		return wordsAndBrEntities;
 	}
+	*/
 
 	function selectOneInX(interval,wordIndexes) {
 		var subsetOfIndexes=[],
@@ -85,8 +87,14 @@
 		return el !== undefined;
 	});
 
-	wordsAndBrEntities = makeBrElements(wordsAndSpaces);
-	wordsAndBrNbspEntities = makeNbspElements(wordsAndBrEntities);
+//wordsAndBrEntities = makeBrElements(wordsAndSpaces);
+	wordsAndBrEntities = wordsAndSpaces.map( function(hey) {
+			return hey.replace(/\r\n/g,'<br/>').replace(/[\r\n]/g,'<br/>');
+		});
+	//wordsAndBrNbspEntities = makeNbspElements(wordsAndBrEntities);
+	wordsAndBrNbspEntities = wordsAndBrEntities.map( function(now) {
+			return now.replace(/\s/g,'&nbsp;');
+		});
 	selectedIndexesForHiding = selectOneInX(5,wordIndexes);
 	suffledIndexesForHiding = shuffleArray(selectedIndexesForHiding);
 	//// encrypt match number
